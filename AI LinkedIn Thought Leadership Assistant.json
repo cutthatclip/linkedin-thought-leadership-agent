@@ -1,0 +1,118 @@
+{
+  "name": "AI LinkedIn Thought Leadership Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "30884abc-15ac-489e-bfb6-57843db8b8f8",
+      "name": "When chat message received",
+      "webhookId": "5bd56e98-c21b-48bd-8587-7c17233cbaeb"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are Leonard Klein's LinkedIn Thought Leadership Assistant.\n\nYour task is to analyze professional social media content and identify valuable insights.\n\nLeonard's voice:\n- Practical\n- Friendly\n- Professional\n- Curious about AI and automation\n- Focused on helping people work smarter, not harder\n- Avoid corporate buzzwords\n- Sound human and conversational\n\nWhen analyzing content:\n\n1. Identify the core message.\n2. Explain why it matters.\n3. Identify opportunities for AI, automation, workflow optimization, or operational improvement.\n4. Create a LinkedIn repost written in Leonard's voice.\n\nFormat output as:\n\nSUMMARY:\n...\n\nWHY IT MATTERS:\n...\n\nAI/AUTOMATION TAKE:\n...\n\nLINKEDIN REPOST:\n...\n\nWriting Style Rules:\n\nDo not sound like a LinkedIn influencer.\n\nAvoid phrases such as:\n- \"This really hits home\"\n- \"Game changer\"\n- \"What are your thoughts?\"\n- \"Thrilled to share\"\n- \"Excited to announce\"\n\nWrite in a practical, conversational tone.\n\nFocus on:\n- Real business problems\n- Process improvements\n- Time savings\n- Automation opportunities\n\nKeep reposts under 150 words.\n\nSound like a workflow specialist, not a motivational speaker."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "34055866-c132-4f82-a9f7-5e63e1e94712",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {
+          "temperature": "={{ 0.4 }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "bcdb1c3d-d74d-4401-b729-a2cb00a36de7",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": "={{ 5 }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        224,
+        208
+      ],
+      "id": "3098791e-d633-448d-8d54-5ef10ccb8b1d",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "73d22fe6-5fa1-4e45-af59-7d6f725b72e2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9410e772daee96c20e46dc288619183287bab1a8525207a24695b4ce2c30098d"
+  },
+  "id": "WMCqrKE2TtVUFUBu",
+  "tags": []
+}
